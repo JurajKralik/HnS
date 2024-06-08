@@ -1,9 +1,10 @@
 [gd_scene load_steps=6 format=3 uid="uid://df2dg0pu0w4a0"]
 
-[ext_resource type="Script" path="res://scenes/HealthKit.gd" id="1_eiau1"]
+[ext_resource type="Script" path="res://scripts/HealthKit.gd" id="1_eiau1"]
 [ext_resource type="Texture2D" uid="uid://rokqwrninlry" path="res://sprites/healthkit.png" id="2_0amo5"]
 [ext_resource type="Texture2D" uid="uid://c7cxemdknqf4s" path="res://sprites/spotlight.webp" id="3_1i6xa"]
 [ext_resource type="AudioStream" uid="uid://25dmvuifqxf1" path="res://sounds/health.ogg" id="4_ufe0n"]
+
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ki3gl"]
 

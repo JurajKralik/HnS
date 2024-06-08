@@ -1,13 +1,24 @@
-[gd_scene load_steps=2 format=3 uid="uid://pcg5mcediueb"]
+[gd_scene load_steps=2 format=3 uid="uid://b1cq6hsmqnlbd"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_8mgcj"]
+[sub_resource type="GDScript" id="GDScript_r4ivb"]
+script/source = "extends CanvasGroup
+
+@onready var state: PlayerState = get_node(\"/root/PlayerState\");
+@onready var cam = get_tree().get_root().get_camera_2d();
+
+func _process(delta):
+	var corner = cam.global_position - get_viewport_rect().size / 2;
+	position = corner;
+		
+	$Health.text = \"HP: \" + str(state.health);
+	$Kills.text = \"Kills: \" + str(state.kills);
+	
+	var bullets = state.bullets;
+	if state.reloading:
+		$Bullets.text = \"Reloading\";
+	else:
+		$Bullets.text = \"Bullets: \" + str(state.bullets);
+"
 
 [node name="CanvasGroup" type="CanvasGroup"]
-
-[node name="Label" type="Label" parent="."]
-offset_left = 60.0
-offset_top = 39.0
-offset_right = 110.0
-offset_bottom = 65.0
-text = "health"
-label_settings = SubResource("LabelSettings_8mgcj")
+script = SubResource("GDScript_r4ivb")

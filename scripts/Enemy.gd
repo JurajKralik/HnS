@@ -59,6 +59,7 @@ func hit():
 		return;
 	
 	spawn_power();
+	player_state.kills += 1;
 	queue_free();
 	
 func growl():

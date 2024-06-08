@@ -37,7 +37,7 @@ func _process(delta):
 	
 	if (!player_state || !player_state.pos):
 		return;
-	
+		
 	if (Time.get_ticks_msec() < next_spawn):
 		return;
 	

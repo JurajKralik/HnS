@@ -41,11 +41,17 @@ func leftClick(mouseCursor):
 	if (Time.get_ticks_msec() < shot_cooldown):
 		return;
 	
-	shot_cooldown = Time.get_ticks_msec() + 175;
+	if state.bullets == 1:
+		shot_cooldown = Time.get_ticks_msec() + 1000;
+		$Reload.play();
+		state.reloading = true;
+	else:
+		shot_cooldown = Time.get_ticks_msec() + 175;
 	
 	# Bullet Spawner
 	var bullet_instance: CharacterBody2D = bullet.instantiate();
 	bullet_instance.setup($Marker2D.global_position, get_global_mouse_position());
+	state.bullets -= 1;
 	get_tree().get_root().add_child(bullet_instance);
 	
 	# Sounds
@@ -60,6 +66,10 @@ func leftClick(mouseCursor):
 	$PlayerArms/Flashlight.offset.y = 5;
 
 func _process(delta):
+	if state.dead:
+		dead();
+		return;
+		
 	var current_time = Time.get_ticks_msec();
 	var mouseCursor = get_global_mouse_position()
 	leftClick(mouseCursor);
@@ -79,6 +89,12 @@ func _process(delta):
 	if (Input.is_action_pressed("move_right")):
 		velocity.x += 1;
 		
+	if (Input.is_key_pressed(KEY_R)) && !state.reloading :
+		$Reload.play();
+		shot_cooldown = Time.get_ticks_msec() + 600;
+		state.bullets = 12;
+		state.reloading = true;
+		
 	if (current_time > muzzle_cooldown && isMuzzleEnabled()):
 		toggleMuzzleFlash(false);
 		
@@ -97,14 +113,28 @@ func damage():
 	player_damage_flash = true;
 	$PlayerHead.modulate = Color(1,0,0);
 	$PlayerArms.modulate = Color(1,0,0);
-	$Damage.play();
-
-	state.health -= 25;
 	
 	if (state.health <= 0):
+		state.dead = true;
+	else:
+		state.health -= 25;
+		$Damage.play();
+		if (state.health <= 0):
+			state.dead = true;
+	
+func reload():
+	if state.reloading && (Time.get_ticks_msec() > shot_cooldown):
+		state.reloading = false;
+		state.bullets = 12;
+func dead():
+	if Input.is_action_pressed("click"):
 		get_tree().reload_current_scene()
+		state.dead = false;
 		state.health = 100;
-
+		state.kills = 0;
+		state.bullets = 12;
+		state.reloading = false;
+			
 func _draw():
 	draw_line($Marker2D.position, get_local_mouse_position(), Color(1, 1, 1, 0.1));
 
@@ -117,3 +147,4 @@ func _physics_process(delta):
 	velocity = velocity * speed;
 	move_and_slide()
 	queue_redraw();
+	reload()
