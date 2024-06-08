@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://ndsnlmj8jeit"]
+[gd_scene load_steps=16 format=3 uid="uid://ndsnlmj8jeit"]
 
 [ext_resource type="Script" path="res://scripts/Player.gd" id="1_t450k"]
 [ext_resource type="PackedScene" uid="uid://daphbk4h288ud" path="res://scenes/Bullet.tscn" id="2_8bjlh"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://c7cxemdknqf4s" path="res://sprites/spotlight.webp" id="5_m51qk"]
 [ext_resource type="Texture2D" uid="uid://y8eqjg4udaq3" path="res://sprites/flashlight.png" id="6_duho2"]
 [ext_resource type="AudioStream" uid="uid://dohx1wnm5w18" path="res://sounds/gun.ogg" id="7_v8oof"]
+[ext_resource type="AudioStream" uid="uid://bt2sixjkoummi" path="res://sounds/game_over.mp3" id="8_akisg"]
 [ext_resource type="AudioStream" uid="uid://bja7q8wy6qaa" path="res://sounds/reload.ogg" id="8_jhwgn"]
 [ext_resource type="AudioStream" uid="uid://bawdktx15111j" path="res://sounds/damage.ogg" id="8_qd2h0"]
 [ext_resource type="Texture2D" uid="uid://8msul2ehhe3w" path="res://sprites/muzzle_flash.png" id="9_bhghh"]
@@ -64,6 +65,11 @@ position = Vector2(27, 9)
 
 [node name="Gunshot" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("7_v8oof")
+volume_db = -5.0
+pitch_scale = 1.47
+
+[node name="GameOver" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("8_akisg")
 volume_db = -5.0
 pitch_scale = 1.47
 

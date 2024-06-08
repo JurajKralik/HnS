@@ -1,7 +1,6 @@
 extends CharacterBody2D
 
 @export var bullet: PackedScene;
-
 @onready var state: PlayerState = get_node("/root/PlayerState");
 
 var speed = 125;
@@ -10,6 +9,7 @@ var muzzle_cooldown = Time.get_ticks_msec();
 var damage_cooldown = Time.get_ticks_msec();
 var player_damage_flash = false;
 var player_arm_jitter = false;
+var rng = RandomNumberGenerator.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -106,7 +106,7 @@ func _process(delta):
 	state.pos = position;
 
 func damage():
-	if (Time.get_ticks_msec() < damage_cooldown):
+	if (Time.get_ticks_msec() < damage_cooldown) || state.dead:
 		return;
 		
 	damage_cooldown = Time.get_ticks_msec() + 1000;
@@ -115,11 +115,15 @@ func damage():
 	$PlayerArms.modulate = Color(1,0,0);
 	
 	if (state.health <= 0):
+		$GameOver.play();
 		state.dead = true;
 	else:
-		state.health -= 25;
+		var randomNumber = rng.randi_range(0, 5);
+		state.health -= 20 + randomNumber;
 		$Damage.play();
 		if (state.health <= 0):
+			$GameOver.play();
+			state.health = 0;
 			state.dead = true;
 	
 func reload():

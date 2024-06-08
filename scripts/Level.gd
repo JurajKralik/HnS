@@ -26,6 +26,8 @@ func spawnEnemy():
 	if (time_between_spawns > 1000):
 		time_between_spawns -= 100;
 	
+	if $SpawnedEnemies.get_child_count() > 7:
+		return;
 	var node: Marker2D = getRandomMarker();
 	var enemy_instance: CharacterBody2D = enemy.instantiate();
 	$SpawnedEnemies.add_child(enemy_instance);
